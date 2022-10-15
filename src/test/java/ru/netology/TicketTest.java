@@ -222,7 +222,7 @@ class TicketTest {
 
         String expected = "Ticket{id: " +
                 (ticket1.getId() + 1) +
-                ", cost in RUB: 7,01, airport from: AAA, airport to: BBB, minutes on way: 10}";
+                ", cost in RUB: 7.01, airport from: AAA, airport to: BBB, minutes on way: 10}";
         String actual = ticket2.toString();
         assertEquals(expected, actual);
     }

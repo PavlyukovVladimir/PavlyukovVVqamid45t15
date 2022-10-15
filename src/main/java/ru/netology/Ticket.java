@@ -2,6 +2,8 @@ package ru.netology;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
+
 
 public class Ticket implements Comparable<Ticket>, Identifiable {
     static private int count = 0;
@@ -87,7 +89,7 @@ public class Ticket implements Comparable<Ticket>, Identifiable {
     // по заданию не нужно, но захотелось добавить "для порядка"
     @Override
     public String toString() {
-        return String.format(
+        return String.format(Locale.US,
                 "Ticket{id: %d, cost in RUB: %.2f, airport from: %s, airport to: %s, minutes on way: %d}",
                 id, costInKopecks / 100.0, airportFrom, airportTo, minutesOnWay);
     }
