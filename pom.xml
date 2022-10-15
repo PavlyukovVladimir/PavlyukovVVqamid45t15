@@ -84,9 +84,9 @@
                             <rules>
                                 <rule>
                                     <element>CLASS</element>
-                                    <excludes>
+<!--                                    <excludes>-->
 <!--                                        <exclude>ru.netology.Repository</exclude>-->
-                                    </excludes>
+<!--                                    </excludes>-->
                                     <limits>
                                         <!--                                        <limit>-->
                                         <!--                                            <counter>LINE</counter>-->
