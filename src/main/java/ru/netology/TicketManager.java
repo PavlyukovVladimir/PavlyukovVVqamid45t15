@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.function.Predicate;
 
 public class TicketManager {
 
@@ -21,37 +20,34 @@ public class TicketManager {
 
     // Ищю билеты в которых искомая строка содержится хотя бы в одном названии аэропорта
     public Ticket[] searchBy(@NotNull String text) {
-        Predicate<Identifiable> p = element -> {
-            Ticket ticket = (Ticket) element;
-            return ticket.getAirportFrom().contains(text) || ticket.getAirportTo().contains(text);
-        };
-        return Arrays.stream(repository.findAll())
-                .filter(p)
-                .map(x -> (Ticket) x)
+        return Arrays.stream(findAll())
+                .filter(ticket -> ticket.getAirportFrom().contains(text) || ticket.getAirportTo().contains(text))
                 .sorted()
                 .toArray(Ticket[]::new);
     }
 
-    // вынес общую часть фильтрующую билеты из методов findAll
-    private boolean predicat(Identifiable element, String from, String to) {
-        Ticket ticket = (Ticket) element;
-        return from.equals(ticket.getAirportFrom()) && to.equals(ticket.getAirportTo());
-    }
-
     // Ищю билеты у которых соответствующие названия аэропортов совпадают с заданными
     public Ticket[] findAll(@NotNull String from, @NotNull String to) {
-        return Arrays.stream(repository.findAll())
-                .filter(element -> predicat(element, from, to))
-                .map(x -> (Ticket) x)
+        return Arrays.stream(findAll())
+                .filter(ticket -> from.equals(ticket.getAirportFrom()) && to.equals(ticket.getAirportTo()))
                 .sorted()
                 .toArray(Ticket[]::new);
     }
 
     public Ticket[] findAll(@NotNull String from, @NotNull String to, @NotNull Comparator<Ticket> comparator) {
-        return Arrays.stream(repository.findAll())
-                .filter(element -> predicat(element, from, to))
-                .map(x -> (Ticket) x)
+        return Arrays.stream(findAll())
+                .filter(ticket -> from.equals(ticket.getAirportFrom()) && to.equals(ticket.getAirportTo()))
                 .sorted(comparator)
                 .toArray(Ticket[]::new);
+    }
+
+    public Ticket[] findAll() {
+        // репозиторий хранит массив Identifiable, поэтому в менеджере билетов, элементы нужно приводить к Ticket явно
+        Identifiable[] allElements = repository.findAll();
+        Ticket[] tmp = new Ticket[allElements.length];
+        for (int i = 0; i < allElements.length; i++) {
+            tmp[i] = (Ticket) allElements[i];
+        }
+        return tmp;
     }
 }
